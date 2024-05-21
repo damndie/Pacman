@@ -1,34 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-		<title>Pacman</title>
-		<link rel="stylesheet" href="css/app.css" />
-	</head>
 
-	<body onload="onInit()" onkeyup="onMovePacman(event)">
-		
-		<h2>Score: <span class="score">0</span></h2>
-		<h3><span class="gameover"></span></h3>
-		<div class="modal">
-			<button onclick="onCloseModal()"></button>
-			<h4><span>Congratulations, you have won!</span></h4>
-			<button onclick="onInit()">Play Again</button>
-		</div>
-		
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pacman</title>
+    <link rel="stylesheet" href="css/app.css">
+</head>
 
-		<table class="board-container">
-			<tbody class="board"></tbody>
-		</table>
+<body onload="onInit()" onkeyup="onMovePacman(event)">
 
-		<button onclick="onInit()">Restart</button>
-		
+    <h2>Score: <span>0</span></h2>
 
-		<script src="js/utils.js"></script>
-		<script src="js/pacman.js"></script>
-		<script src="js/ghost.js"></script>
-		<script src="js/game.js"></script>
-	</body>
+    <table class="board-container">
+        <tbody class="board"></tbody>
+    </table>
+
+    <div class="modal">
+        <h2></h2>
+        <button onclick="onInit()">Play again</button>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/pacman.js"></script>
+    <script src="js/ghost.js"></script>
+</body>
+
 </html>

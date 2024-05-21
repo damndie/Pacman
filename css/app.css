@@ -1,6 +1,6 @@
 body {
   background-color: black;
-  color:white;
+  color: white;
   text-align: center;
 }
 
@@ -14,9 +14,23 @@ body {
   height: 2em;
 }
 
-.modal {
-    background-color: lightseagreen;
-    margin-left: 1100px;
-    text-align: center;
-    width: 300px;
+.cell img {
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.hide {
+  display: none;
+}
+
+.up {
+  transform: rotate(-0.25turn);
+}
+
+.down {
+  transform: rotate(90deg);
+}
+
+.left {
+  transform: scaleX(-1);
 }

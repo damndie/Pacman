@@ -1,83 +1,83 @@
 'use strict'
 
 const GHOST = '👻'
-var gGhosts = []
-
+var gGhosts
 var gIntervalGhosts
-
-function createGhosts(board) {
-    // DONE: 3 ghosts and an interval
-    gGhosts = []
-    for (var i = 0; i < 3; i++) {
-        createGhost(board)
-    }   
-    if (gIntervalGhosts) clearInterval(gIntervalGhosts)
-    gIntervalGhosts = setInterval(moveGhosts, 1000)
-}
+var gRemovedGhosts = []
 
 function createGhost(board) {
-    // DONE
-    const ghost = {
+    var ghost = {
         location: {
-            i: 2,
-            j: 6
+            i: 3,
+            j: 3
         },
         currCellContent: FOOD,
         color: getRandomColor()
     }
-
     gGhosts.push(ghost)
     board[ghost.location.i][ghost.location.j] = GHOST
+
+}
+
+function createGhosts(board) {
+    // 3 ghosts and an interval
+    gGhosts = []
+
+    for (var i = 0; i < 3; i++) {
+        createGhost(board)
+    }
+
+    if (gIntervalGhosts) clearInterval(gIntervalGhosts)
+    gIntervalGhosts = setInterval(moveGhosts, 1000)
 }
 
 function moveGhosts() {
-    // DONE: loop through ghosts
+    // loop through ghosts
     for (var i = 0; i < gGhosts.length; i++) {
-        const ghost = gGhosts[i]
+        var ghost = gGhosts[i]
         moveGhost(ghost)
     }
 }
 
 function moveGhost(ghost) {
-    // DONE: figure out moveDiff, nextLocation, nextCell
-    const moveDiff = getMoveDiff()
-    const nextLocation = {
+    // console.log('ghost:', ghost)
+    // figure out moveDiff, nextLocation, nextCell
+
+    var moveDiff = getMoveDiff()
+    // console.log('moveDiff:', moveDiff)
+
+    var nextLocation = {
         i: ghost.location.i + moveDiff.i,
         j: ghost.location.j + moveDiff.j
     }
-    const nextCell = gBoard[nextLocation.i][nextLocation.j]
+    // console.log('nextLocation:', nextLocation) //{i,j}
 
-    // DONE: return if cannot move
-    if (nextCell === WALL) return
-    if (nextCell === GHOST) return
+    var nextCell = gBoard[nextLocation.i][nextLocation.j] //'.'
+    // console.log('nextCell:', nextCell)
 
-    // DONE: hitting a pacman? call gameOver
-    if (nextCell === PACMAN) {
-        document.querySelector('h4 span').innerText = 'You lost. :('
-        openModal("Game Over")
+    // return if cannot move
+    if (nextCell === WALL || nextCell === GHOST) return
+
+    // hitting a pacman? call gameOver
+    if (nextCell === PACMAN_IMG) {
+        if(gPacman.isSuper) return
         gameOver()
-        return
     }
 
-    if(PACMAN === SUPER_FOOD){
-        ghost.color = 'blue'
-        
-    }
-
-
-    // DONE: moving from current location:
-    // DONE: update the model 
+    // moving from current location:
+    // update the model (restore prev cell contents)
     gBoard[ghost.location.i][ghost.location.j] = ghost.currCellContent
-    // DONE: update the DOM
-    renderCell(ghost.location,  ghost.currCellContent)
 
+    // update the DOM
+    renderCell(ghost.location, ghost.currCellContent)
 
-    // DONE: Move the ghost to new location:
-    // DONE: update the model 
+    // Move the ghost to new location:
+    // update the model (save cell contents)
     ghost.location = nextLocation
     ghost.currCellContent = nextCell
-    gBoard[nextLocation.i][nextLocation.j] = GHOST
-    // DONE: update the DOM
+
+    gBoard[ghost.location.i][ghost.location.j] = GHOST
+    // update the DOM
     renderCell(ghost.location, getGhostHTML(ghost))
 }
 
@@ -92,16 +92,24 @@ function getMoveDiff() {
     }
 }
 
-function getGhostHTML(ghost) {
-    var ghostColor = ghost.color 
-    return `<span style="background-color: ${ghostColor};">${GHOST}</span>`
+function removeGhosts(nextLocation) {
+    for (var i = 0; i < gGhosts.length; i++) {
+        if (gGhosts[i].location.i === nextLocation.i
+            && gGhosts[i].location.j === nextLocation.j) {
+            gRemovedGhosts.push(gGhosts[i])
+            gGhosts.splice(i, 1)
+        }
+    }
 }
 
-function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
+function resetGhosts() {
+    for (var i = 0; i < gRemovedGhosts.length; i++) {
+        gGhosts[gGhosts.length] = gRemovedGhosts[i]
     }
-    return color;
+}
+
+
+function getGhostHTML(ghost) {
+    const color = gPacman.isSuper ? 'blue' : ghost.color
+    return `<span style="background-color:${color};">${GHOST}</span>`
 }
