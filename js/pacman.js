@@ -107,6 +107,7 @@ function getNextLocation(eventKeyboard) {
 function pacmanSuperPowerMode() {
     if (gPacman.isSuper) return
     gPacman.isSuper = true
+    gRemovedGhosts = []
     setTimeout(() => {
         gPacman.isSuper = false
         resetGhosts()
